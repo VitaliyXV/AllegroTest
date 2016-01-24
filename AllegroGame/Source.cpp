@@ -2,5 +2,5 @@
 
 void main()
 {
-
+	cout << "It's works!" << endl;
 }
