@@ -42,7 +42,6 @@ void main()
 	// картинка
 	ALLEGRO_BITMAP  *image = nullptr;
 
-
 	// инициализируем библиотеку
 	if (!al_init())
 	{
@@ -95,7 +94,10 @@ void main()
 	al_init_image_addon();
 
 	// загружаем изображение: ВАЖНО! работать с картинками можно только после создания дисплея
-	image = al_load_bitmap("Panda.png");
+	image = al_load_bitmap("hunter1.png");
+	al_convert_mask_to_alpha(image, al_map_rgb(0, 0, 0));
+	
+	ALLEGRO_BITMAP *background = al_load_bitmap("bg5.jpg");
 
 	if (!image)
 	{
@@ -147,6 +149,8 @@ void main()
 
 	// запускаем таймер
 	al_start_timer(timer);
+	
+	int direction;
 
 	while (true)
 	{
@@ -237,18 +241,22 @@ void main()
 			{
 			case ALLEGRO_KEY_UP:
 				key[(int)MYKEYS::KEY_UP] = true;
+				direction = ALLEGRO_KEY_UP;
 				break;
 
 			case ALLEGRO_KEY_DOWN:
 				key[(int)MYKEYS::KEY_DOWN] = true;
+				direction = ALLEGRO_KEY_DOWN;
 				break;
 
 			case ALLEGRO_KEY_LEFT:
 				key[(int)MYKEYS::KEY_LEFT] = true;
+				direction = ALLEGRO_KEY_LEFT;
 				break;
 
 			case ALLEGRO_KEY_RIGHT:
 				key[(int)MYKEYS::KEY_RIGHT] = true;
+				direction = ALLEGRO_KEY_RIGHT;
 				break;
 			}
 		}
@@ -257,19 +265,19 @@ void main()
 			switch (ev.keyboard.keycode)
 			{
 			case ALLEGRO_KEY_UP:
-				key[(int)MYKEYS::KEY_UP] = false;
+				key[(int)MYKEYS::KEY_UP] = false;				
 				break;
 
 			case ALLEGRO_KEY_DOWN:
-				key[(int)MYKEYS::KEY_DOWN] = false;
+				key[(int)MYKEYS::KEY_DOWN] = false;				
 				break;
 
 			case ALLEGRO_KEY_LEFT:
-				key[(int)MYKEYS::KEY_LEFT] = false;
+				key[(int)MYKEYS::KEY_LEFT] = false;				
 				break;
 
 			case ALLEGRO_KEY_RIGHT:
-				key[(int)MYKEYS::KEY_RIGHT] = false;
+				key[(int)MYKEYS::KEY_RIGHT] = false;				
 				break;
 
 			case ALLEGRO_KEY_ESCAPE:
@@ -286,11 +294,37 @@ void main()
 			// очищаем экран
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 
+			
+						
+			
+			al_draw_bitmap(background, 0, 0, 0);
+			
 			// выводим изображение
-			al_draw_bitmap(bouncer, bouncer_x, bouncer_y, 0);
-
+			//al_draw_bitmap(bouncer, bouncer_x, bouncer_y, 0);
+			
 			// выводим картинку
-			al_draw_bitmap(image, 200, 200, 0);
+			//al_draw_bitmap(image, 200, 200, 0);
+
+			//al_draw_bitmap_region(image, 1, 1, 20, 20, 10, 10, 0);
+			
+			switch ((int)direction)
+			{
+			case ALLEGRO_KEY_UP:
+				al_draw_bitmap_region(image, 26, 1, 20, 20, bouncer_x, bouncer_y, 0);
+				break;
+
+			case ALLEGRO_KEY_DOWN:
+				al_draw_bitmap_region(image, 26, 51, 20, 20, bouncer_x, bouncer_y, 0);
+				break;
+
+			case ALLEGRO_KEY_LEFT:
+				al_draw_bitmap_region(image, 1, 26, 20, 20, bouncer_x, bouncer_y, 0);
+				break;
+
+			case ALLEGRO_KEY_RIGHT:
+				al_draw_bitmap_region(image, 51, 26, 20, 20, bouncer_x, bouncer_y, 0);
+				break;
+			}
 
 			// переключаем дисплей
 			al_flip_display();
