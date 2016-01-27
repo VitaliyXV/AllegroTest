@@ -27,6 +27,7 @@ void main()
 	// перерисовывать ли экран
 	bool redraw = true;
 
+	// флаги нажатия клавиш
 	bool key[4] = { false, false, false, false };
 	bool doexit = false;
 
